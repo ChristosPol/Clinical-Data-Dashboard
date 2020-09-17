@@ -1,7 +1,3 @@
-library(tidyr)
-library(readr)
-library(data.table)
-library(rvest)
 # Clean environment
 rm(list = ls())
 

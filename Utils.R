@@ -3,6 +3,11 @@ suppressMessages(library(data.table))
 suppressMessages(library(ggplot2))
 suppressMessages(library(tidyr))
 suppressMessages(library(readr))
+suppressMessages(library(tidyr))
+suppressMessages(library(readr))
+suppressMessages(library(data.table))
+suppressMessages(library(rvest))
+
 
 GET_HTML <- function(url){
   measures <- list()
@@ -42,4 +47,9 @@ GET_HTML <- function(url){
     measures[[i]] <- main_measures
   }
   return(measures)
+}
+
+renaming_columns <- function(p, grep_arguments = c(), new_names = c() ){
+  colnames(p)[sapply(grep_arguments, function(x)  grep(x, colnames(p)))] <- new_names
+  return(p)
 }

@@ -1,5 +1,5 @@
 rm(list=ls())
-gc()
+
 source(paste(getwd(), "Utils.R", sep ="/"))
 
 # Vector of websites to scrape
@@ -8,24 +8,25 @@ url <- c("https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD012816.pub
          "https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD009266.pub2/full")
 
 # Websites scraped and ready to be edited
-measures <- GET_HTML(url)
+measures <- lapply(GET_HTML(url), as.data.table)
+
 
 # Renaming all columns so we can rbind
-colnames(measures[[1]])[grep("Relative", colnames(measures[[1]]))] <- "Relative_effect_95_CI"
-colnames(measures[[2]])[grep("Relative", colnames(measures[[2]]))] <- "Relative_effect_95_CI"
-colnames(measures[[3]])[grep("Relative", colnames(measures[[3]]))] <- "Relative_effect_95_CI"
+grep_arguments <-c("Relative", "participants", "GRADE")
+new_names <- c("Relative_effect_95_CI", "Number_of_participants", "Quality_GRADE")
 
-colnames(measures[[1]])[grep("participants", colnames(measures[[1]]))] <- "Number_of_participants"
-colnames(measures[[2]])[grep("participants", colnames(measures[[2]]))] <- "Number_of_participants"
-colnames(measures[[3]])[grep("participants", colnames(measures[[3]]))] <- "Number_of_participants"
-
-colnames(measures[[1]])[grep("GRADE", colnames(measures[[1]]))] <- "Quality_GRADE"
-colnames(measures[[2]])[grep("GRADE", colnames(measures[[2]]))] <- "Quality_GRADE"
-colnames(measures[[3]])[grep("GRADE", colnames(measures[[3]]))] <- "Quality_GRADE"
-
+measures <- lapply(measures, function(x) renaming_columns(p,
+                                                          grep_arguments = c("Relative",
+                                                                             "participants",
+                                                                             "GRADE"),
+                                                          new_names = c("Relative_effect_95_CI",
+                                                                        "Number_of_participants",
+                                                                        "Quality_GRADE")))
+# bind the three tables together
 final_table <- do.call(rbind, measures)
-final_table$Relative_effect_95_CI <- gsub(pattern = "  ", " ", final_table$Relative_effect_95_CI)
 
+# Manual fixing of the columns
+final_table$Relative_effect_95_CI <- gsub(pattern = "  ", " ", final_table$Relative_effect_95_CI)
 final_table$Statistic <- unlist(lapply(strsplit(final_table$Relative_effect_95_CI, " "), "[", 1))
 final_table$Effect_size <- as.numeric(unlist(lapply(strsplit(final_table$Relative_effect_95_CI, " "), "[", 2)))
 final_table$CI_Lower <- unlist(lapply(strsplit(final_table$Relative_effect_95_CI, " "), "[", 3))
