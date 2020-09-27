@@ -1,0 +1,20 @@
+# To save the Shinyapp either you save one file with the name app.R finising
+with shinyApp(), or two different files named server.R and ui.R
+
+# library(rsconnect)
+# rsconnect::deployApp('path/to/your/app')
+
+# Getting started at:
+shiny.rstudio.com/articles/shinyapps.html
+
+# Check payplans for our needs
+
+# Own server at Shiny Server PRO
+# www.rstudio.com/products/shiny/shiny-server
+
+# More on shiny.rstudio.com
+
+# Webinars available at
+# www.rstudio.com/resources/webinars
+
+# tags$ contain all html attributes
