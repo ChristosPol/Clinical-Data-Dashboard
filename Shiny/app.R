@@ -2,8 +2,8 @@ library("shiny")
 library("readr")
 
 # Load esmo scorecards
-ESMO_Scorecards_all_cancers <- read_csv("/media/chris/DATA/Documents/Clinical_Data_Dashboard/Shiny/ESMO_Scorecards_all_cancers.csv")
-
+ESMO_Scorecards_all_cancers <- read_csv("ESMO_Scorecards_all_cancers.csv")
+View(ESMO_Scorecards_all_cancers)
 tumor_types <- data.frame(type = ESMO_Scorecards_all_cancers$Tumour.Type,
                           sub = ESMO_Scorecards_all_cancers$Tumour.Sub.type)
 

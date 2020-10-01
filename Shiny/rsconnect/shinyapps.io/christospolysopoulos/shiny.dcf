@@ -5,6 +5,9 @@ account: christospolysopoulos
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2897254
-bundleId: 3676369
+bundleId: 3692890
 url: https://christospolysopoulos.shinyapps.io/shiny/
-when: 1601228393.94516
+when: 1601584122.03351
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: notes
