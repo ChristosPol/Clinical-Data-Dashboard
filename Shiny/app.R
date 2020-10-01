@@ -10,14 +10,20 @@ tumor_types <- data.frame(type = ESMO_Scorecards_all_cancers$Tumour.Type,
 # Set up the layout
 ui <- fluidPage(
   tags$h1("Clinical Data Dashboard"),
-  selectInput(inputId = "tum_type",
-              label = "Select Tumor type",
-              choices =  unique(tumor_types$sub)),
-  fluidRow(
-    column(2, tableOutput('table'))
-  )
+  tabsetPanel(
+        tabPanel(title ="Data Table",
+        selectInput(inputId = "tum_type",
+                    label = "Select Tumor type",
+                    choices =  unique(tumor_types$sub)),
+        fluidRow(
+          column(2, tableOutput('table'))
+    )
+    ),
+    tabPanel(title ="Data Visualization",
+             plotOutput("Normal")
+             )
+    )
 )
-
 # Inputs and outputs
 server <- function(input, output) {
   
@@ -28,6 +34,10 @@ server <- function(input, output) {
   output$table <- renderTable( {
     data()
     })
+  output$Normal <- renderPlot({
+    hist(rnorm(400), breaks = 30, col = "grey", border = "white",
+         main = "500 random draws from a standard normal distribution")
+  })
 }
 
 # Launch the app
